@@ -1,29 +1,21 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
-    id("org.jetbrains.kotlin.plugin.compose") version "2.0.21"
-    id("com.google.devtools.ksp") version "2.0.20-1.0.24"
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
+    id("androidx.room") version "2.6.0"
 
 }
-
 android {
     namespace = "com.example.selfprotectionapp"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.selfprotectionapp"
+        applicationId = "com.example.app"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
     }
 
     buildFeatures {
@@ -31,28 +23,43 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
+        kotlinCompilerExtensionVersion = "1.5.13"
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_11 // Updated to Java 11
+        targetCompatibility = JavaVersion.VERSION_11 // Updated to Java 11
     }
 
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "11"
     }
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
+
+
+
 }
+
 dependencies {
-
-
-    implementation("androidx.core:core-ktx:1.16.0")
-    implementation("androidx.activity:activity-compose:1.10.1")
-    implementation("androidx.compose.material3:material3:1.2.0")
-    implementation("androidx.compose.ui:ui:1.5.4")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    implementation("com.google.dagger:hilt-android:2.49")
     implementation("com.google.android.material:material:1.10.0")
-    kapt("com.google.dagger:hilt-compiler:2.49")
+    // Jetpack Compose
+    implementation("androidx.compose.ui:ui:1.5.3")
+    implementation("androidx.compose.material:material:1.5.3")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.5.3")
+
+    // Room (kapt)
+    implementation("androidx.room:room-runtime:2.6.0")
+    implementation("androidx.room:room-ktx:2.6.0")
+    implementation(libs.androidx.material3.android)
+    ksp("androidx.room:room-compiler:2.6.0")
+
+    // Hilt (ksp)
+    implementation("com.google.dagger:hilt-android:2.48")
+    ksp("com.google.dagger:hilt-compiler:2.48") // Standardized on KSP
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+
+    // Kotlin
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.23")
 }

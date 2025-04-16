@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.selfprotectionapp.R
 
+
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
     val state by viewModel.state.collectAsState()
