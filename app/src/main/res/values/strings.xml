@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SelfProtectionApp</string>
+    <string name="home_title">SelfProtection</string>
+    <string name="analyze_button">Анализировать сообщения</string>
+</resources>
