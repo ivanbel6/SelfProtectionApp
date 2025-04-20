@@ -1,4 +1,5 @@
 package com.example.selfprotectionapp.data
+
 import android.content.Context
 import androidx.room.Room
 import com.example.selfprotectionapp.domain.ThreatRepository
@@ -38,5 +39,11 @@ object DataModule {
     @Singleton
     fun provideVkDataSource(): VkDataSource {
         return VkDataSource()
+    }
+
+    @Provides
+    @Singleton
+    fun provideMailDataSource(): MailDataSource {
+        return MailDataSource()
     }
 }

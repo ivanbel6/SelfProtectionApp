@@ -64,4 +64,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.23")
 
     implementation("androidx.navigation:navigation-compose:2.7.0")
+
+    implementation("com.vk:android-sdk-core:4.1.0")
+    implementation("com.vk:android-sdk-api:4.1.0") // generated models and api methods
 }
