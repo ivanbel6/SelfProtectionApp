@@ -39,7 +39,7 @@ android {
     }
     packagingOptions {
         resources {
-            excludes += listOf("META-INF/NOTICE.md", "META-INF/LICENSE.md")
+            excludes += listOf("META-INF/NOTICE.md", "META-INF/LICENSE.md","META-INF/DEPENDENCIES")
         }
     }
 
@@ -73,4 +73,6 @@ dependencies {
     implementation("com.vk:android-sdk-api:4.1.0") // generated models and api methods
 
     implementation("com.sun.mail:jakarta.mail:2.0.1")
+
+    implementation("com.google.auth:google-auth-library-oauth2-http:1.20.0")
 }

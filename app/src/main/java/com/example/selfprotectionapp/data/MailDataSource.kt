@@ -10,16 +10,18 @@ import javax.inject.Inject
 
 
 class MailDataSource @Inject constructor() {
-    suspend fun fetchMessages(): List<String> = withContext(Dispatchers.IO) {
+    suspend fun fetchMessages(token: String? = null): List<String> = withContext(Dispatchers.IO) {
         try {
             val props = Properties().apply {
                 put("mail.imap.host", "imap.mail.ru")
                 put("mail.imap.port", "993")
                 put("mail.imap.ssl.enable", "true")
+                put("mail.imap.auth.mechanisms", "XOAUTH2")
             }
             val session = Session.getDefaultInstance(props)
             val store: Store = session.getStore("imap")
-            store.connect("username@mail.ru", "password") // Заглушка, реальные данные позже
+            // Используем OAuth-токен
+            store.connect("imap.mail.ru", "username@mail.ru", token ?: "mock_token")
             val inbox: Folder = store.getFolder("INBOX")
             inbox.open(Folder.READ_ONLY)
             val messages = inbox.messages.mapNotNull { it.subject }

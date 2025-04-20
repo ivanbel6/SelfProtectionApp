@@ -17,23 +17,43 @@ class SelfProtectionAccessibilityService : AccessibilityService() {
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var clickCount = 0
     private var lastClickTime = 0L
+    private var textInputCount = 0
+    private var lastTextInputTime = 0L
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
-        if (event.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED) {
-            val currentTime = System.currentTimeMillis()
-            clickCount++
-            if (currentTime - lastClickTime < 1000) { // Частые клики
-                scope.launch {
-                    threatRepository.insertThreat(
-                        Threat(
-                            message = "Обнаружены частые клики",
-                            level = "Medium",
-                            recommendation = "Замедлите действия, возможна подозрительная активность."
+        when (event.eventType) {
+            AccessibilityEvent.TYPE_VIEW_CLICKED -> {
+                val currentTime = System.currentTimeMillis()
+                clickCount++
+                if (currentTime - lastClickTime < 1000) { // Частые клики
+                    scope.launch {
+                        threatRepository.insertThreat(
+                            Threat(
+                                message = "Обнаружены частые клики",
+                                level = "Medium",
+                                recommendation = "Замедлите действия, возможна подозрительная активность."
+                            )
                         )
-                    )
+                    }
                 }
+                lastClickTime = currentTime
             }
-            lastClickTime = currentTime
+            AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED -> {
+                val currentTime = System.currentTimeMillis()
+                textInputCount++
+                if (currentTime - lastTextInputTime < 1000) { // Частый ввод текста
+                    scope.launch {
+                        threatRepository.insertThreat(
+                            Threat(
+                                message = "Обнаружен частый ввод текста",
+                                level = "Medium",
+                                recommendation = "Проверьте, не вводите ли вы данные на подозрительной странице."
+                            )
+                        )
+                    }
+                }
+                lastTextInputTime = currentTime
+            }
         }
     }
 

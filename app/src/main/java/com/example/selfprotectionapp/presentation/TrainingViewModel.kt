@@ -1,5 +1,4 @@
 package com.example.selfprotectionapp.presentation
-
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,12 +12,14 @@ class TrainingViewModel @Inject constructor() : ViewModel() {
 
     fun selectOption(index: Int) {
         val correctAnswer = 0 // "Срочно подтвердите данные"
+        val isCorrect = index == correctAnswer
         _state.value = _state.value.copy(
             selectedOption = index,
-            result = if (index == correctAnswer)
+            result = if (isCorrect)
                 "Правильно! Это фишинговое сообщение."
             else
-                "Неверно. Фишинг часто использует срочные запросы."
+                "Неверно. Фишинг часто использует срочные запросы.",
+            progress = if (isCorrect) _state.value.progress + 20 else _state.value.progress
         )
     }
 }
@@ -30,5 +31,6 @@ data class TrainingState(
         "Ваш заказ доставлен"
     ),
     val selectedOption: Int? = null,
-    val result: String = ""
+    val result: String = "",
+    val progress: Int = 0
 )
