@@ -1,5 +1,4 @@
 package com.example.selfprotectionapp.data
-
 import android.content.Context
 import androidx.room.Room
 import com.example.selfprotectionapp.domain.ThreatRepository
@@ -13,7 +12,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DataModule {
-
     @Provides
     @Singleton
     fun provideThreatDatabase(@ApplicationContext context: Context): ThreatDatabase {
@@ -32,7 +30,13 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideThreatRepository(dao: ThreatDao): ThreatRepository {
-        return ThreatRepositoryImpl(dao)
+    fun provideThreatRepository(threatDao: ThreatDao): ThreatRepository {
+        return ThreatRepositoryImpl(threatDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideVkDataSource(): VkDataSource {
+        return VkDataSource()
     }
 }

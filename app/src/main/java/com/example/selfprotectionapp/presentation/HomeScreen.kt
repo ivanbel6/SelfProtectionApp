@@ -15,12 +15,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.selfprotectionapp.R
 
+@Composable
+fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
+    val navController = rememberNavController()
+    NavHost(navController, startDestination = "home") {
+        composable("home") { HomeContent(viewModel, navController) }
+        composable("notifications") { NotificationsScreen() }
+        composable("training") { TrainingScreen() }
+        composable("permissions") { PermissionsScreen() }
+    }
+}
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
+fun HomeContent(viewModel: HomeViewModel, navController: NavController) {
     val state by viewModel.state.collectAsState()
 
     Column(
@@ -29,7 +43,6 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Заголовок и статус
         Text(
             text = "SelfProtection",
             style = MaterialTheme.typography.headlineMedium,
@@ -43,9 +56,23 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
             color = if (state.status == "Безопасно") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
         )
 
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            elevation = CardDefaults.cardElevation(4.dp)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = "Угроз за неделю: ${state.threatCount}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+        }
+
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Кнопка анализа
         Button(
             onClick = { viewModel.analyzeMessages() },
             modifier = Modifier.fillMaxWidth(),
@@ -53,10 +80,33 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
         ) {
             Text("Анализировать сообщения", fontSize = 16.sp)
         }
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(
+            onClick = { navController.navigate("notifications") },
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+        ) {
+            Text("Посмотреть уведомления", fontSize = 16.sp)
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(
+            onClick = { navController.navigate("training") },
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+        ) {
+            Text("Пройти обучение", fontSize = 16.sp)
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(
+            onClick = { navController.navigate("permissions") },
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+        ) {
+            Text("Настроить разрешения", fontSize = 16.sp)
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Список уведомлений
         AnimatedVisibility(
             visible = state.notifications.isNotEmpty(),
             enter = fadeIn(),

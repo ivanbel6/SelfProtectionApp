@@ -62,4 +62,6 @@ dependencies {
 
     // Kotlin
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.23")
+
+    implementation("androidx.navigation:navigation-compose:2.7.0")
 }

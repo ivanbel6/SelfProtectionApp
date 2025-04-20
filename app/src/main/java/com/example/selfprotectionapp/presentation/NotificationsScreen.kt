@@ -1,14 +1,13 @@
 package com.example.selfprotectionapp.presentation
 
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
 import androidx.compose.material3.*
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -17,12 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.selfprotectionapp.R
 import com.example.selfprotectionapp.domain.Threat
 
 @Composable
-fun NotificationsScreen(viewModel: NotificationsViewModel = viewModel()) {
+fun NotificationsScreen(viewModel: NotificationsViewModel = hiltViewModel()) {
     val threats by viewModel.threats.collectAsState()
 
     Column(
