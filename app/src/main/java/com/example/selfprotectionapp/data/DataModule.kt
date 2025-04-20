@@ -46,4 +46,10 @@ object DataModule {
     fun provideMailDataSource(): MailDataSource {
         return MailDataSource()
     }
+
+    @Provides
+    @Singleton
+    fun provideTelegramDataSource(): TelegramDataSource {
+        return TelegramDataSource()
+    }
 }

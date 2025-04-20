@@ -1,5 +1,6 @@
 package com.example.selfprotectionapp.presentation
 
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -9,10 +10,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun PermissionsScreen(viewModel: PermissionsViewModel = viewModel()) {
+fun PermissionsScreen(viewModel: PermissionsViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
 
     Column(
@@ -25,6 +26,13 @@ fun PermissionsScreen(viewModel: PermissionsViewModel = viewModel()) {
             text = "Разрешения",
             style = MaterialTheme.typography.headlineMedium,
             fontSize = 28.sp,
+            color = MaterialTheme.colorScheme.primary
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = "Прогресс настройки: ${state.progress}%",
+            style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -59,6 +67,12 @@ fun PermissionsScreen(viewModel: PermissionsViewModel = viewModel()) {
             description = "Для доступа к личным чатам",
             isGranted = state.telegramPermission,
             onRequest = { viewModel.requestTelegramPermission() }
+        )
+        PermissionItem(
+            title = "Accessibility",
+            description = "Для поведенческой аналитики",
+            isGranted = state.accessibilityPermission,
+            onRequest = { viewModel.requestAccessibilityPermission() }
         )
     }
 }

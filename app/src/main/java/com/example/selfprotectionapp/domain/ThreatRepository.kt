@@ -4,5 +4,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface ThreatRepository {
     suspend fun insertThreat(threat: Threat)
-    fun getAllThreats(): Flow<List<Threat>>
+    suspend fun getThreats(): List<Threat>
 }
